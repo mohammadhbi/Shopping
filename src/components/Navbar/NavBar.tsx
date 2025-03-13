@@ -6,10 +6,10 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   return (
     <nav className=" shadow-md  w-full">
-      <div className="container mx-auto flex items-center justify-between p-4">
+      <div className="container mx-auto flex items-center justify-around p-4">
 
-        <NavLink to="/" className="text-2xl font-bold text-gray-800">
-          Comfy Store
+        <NavLink to="/" className="text-2xl font-bold text-gray-800 hidden lg:flex btn btn-primary  items-center active">
+          C
         </NavLink>
 
         <div className="flex items-center space-x-6">

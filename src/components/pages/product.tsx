@@ -44,7 +44,7 @@ function ProductPage() {
         <img src={product.attributes.image} alt={product.attributes.title} className="w-full h-auto rounded-lg shadow-lg" />
         <div>
           <h1 className="text-3xl font-bold">{product.attributes.title}</h1>
-          <p className="text-gray-500 text-lg my-2">${product.attributes.price}</p>
+          <p className="text-gray-500 text-lg my-2">${product.attributes.price/100}</p>
           <p className="text-gray-700">{product.attributes.description}</p>
           {Array.isArray(product.attributes.colors) &&
             product.attributes.colors.map((color) => {
@@ -53,11 +53,11 @@ function ProductPage() {
                   key={color}
                   onClick={() => handleColorClick(color)}
                   className={`w-12 h-12 rounded-full mr-4 mb-4 transition-all duration-300 ${
-                    activeColor === color ? "border-4 border-blue-600" : "" // Visible border with color
+                    activeColor === color ? "border-4 border-gray-500" : ""    
                   }`}
                   style={{ backgroundColor: color }}
                 >
-                  {/* Optionally add text or an icon here */}
+                 
                 </button>
               );
             })}

@@ -3,19 +3,17 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import SearchBar from "./home/SearchBar";
 import { useMemo, useState } from "react";
+
 interface Product {
   id: number;
-  title: string;
-  price: number;
-  image: string;
   attributes: {
     title: string;
     price: number;
     image: string;
     color: string[];
-
   };
 }
+
 interface Filter {
   title: string;
   priceMin: number;
@@ -24,6 +22,7 @@ interface Filter {
   category: string;
   freeShipping: boolean;
 }
+
 function Products() {
   const [filters, setFilters] = useState<Filter>({
     title: "",
@@ -33,30 +32,51 @@ function Products() {
     category: "",
     freeShipping: false,
   });
-  
+
   const [page, setPage] = useState(1);
   const limit = 5;
+////////////////////////////////////////////////////////////
+  const queryString = useMemo(() => {
+    const queryParams = [
+      filters.title && `title=${filters.title}`,
+      filters.priceMin && `priceMin=${filters.priceMin}`,
+      filters.priceMax && `priceMax=${filters.priceMax}`,
+      filters.company && `company=${filters.company}`,
+      filters.category && `category=${filters.category}`,
+      filters.freeShipping && `freeShipping=true`,
+    ]
+      .filter(Boolean)
+      .join("&");
+
+    return queryParams ? `?${queryParams}` : "";
+  }, [filters]);
+
+  const fetchProducts = async () => {
+    const response = await axios.get(`https://strapi-store-server.onrender.com/api/products${queryString}`);
+    return response.data;
+  };
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["products", filters, queryString],
-    queryFn: async () => {
-      const response = await axios.get(`https://strapi-store-server.onrender.com/api/products${queryString}`);
-      console.log(response.data);
-      return response.data;
-    },
+    queryKey: ["products", filters],
+    queryFn: fetchProducts,
     keepPreviousData: true,
   });
 
-const handleFilters = (e : React.ChangeEvent<HTMLInputElement>)=>{
-  const {name, value, type,checked} = e.target;
-}
+  const handleFilters = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const products = data?.data || [];
-  const totalPages = data?.meta?.pagination?.pageCount || 1
+  const totalPages = data?.meta?.pagination?.pageCount || 1;
   const paginatedProducts = products.slice((page - 1) * limit, page * limit);
+
   return (
     <div>
       <SearchBar />
@@ -100,11 +120,9 @@ const handleFilters = (e : React.ChangeEvent<HTMLInputElement>)=>{
             Next
           </button>
         </div>
-
       </div>
     </div>
   );
 }
 
 export default Products;
-

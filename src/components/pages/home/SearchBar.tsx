@@ -25,6 +25,7 @@ function SearchBar() {
                         <div className="flex flex-col gap-2">
                             <label htmlFor="company">Company</label>
                             <select className="select select-bordered select-sm w-full max-w-xs" name="company" id="company">
+                                <option value="all">All</option>
                                 <option value="Modenza">Modenza</option>
                                 <option value="Luxora">Luxora</option>
                                 <option value="Artifex">Artifex</option>
@@ -46,22 +47,22 @@ function SearchBar() {
 
                 </div>
                 <div className="flex flex-row gap-48 justify-around mr-72 mt-12">
-                   <div className="flex flex-col gap-2 pr-28">
-                   <input type="range" min={0} max={100000} value={value} onChange={(e) => setValue(e.target.value)} className="range range-primary range-sm" />
-                   <span>{value}</span>
-                    <div className="w-full flex gap-x-52 text-xs px-2 mt-2">
-                        <span className="font-bold text-md">0</span>
-                        <span className="font-bold text-md">Max : $1,000.00</span>
+                    <div className="flex flex-col gap-2 pr-28">
+                        <input type="range" min={0} max={1000.00} value={value} onChange={(e) => setValue(e.target.value)} className="range range-primary range-sm" />
+                        <span>{value} $</span>
+                        <div className="w-full flex gap-x-52 text-xs px-2 mt-2">
+                            <span className="font-bold text-md">0</span>
+                            <span className="font-bold text-md">Max : $1,000.00</span>
                         </div>
-                   </div>
-                   <div className="form-control items-center flex flex-col gap-2 pr-28">
-                   <label  className="label cursor-pointer"><span className="label-text capitalize">free shipping</span></label>
-                    <input type="checkbox" className="checkbox checkbox-primary checkbox-sm" />
-                   </div>
-                   <div className="flex flex-row gap-4">
-                    <button type="submit" className="btn btn-primary btn-sm w-full">search</button>
-                    <Link className="btn btn-accent btn-sm w-full" to="/products">reset</Link>
-                   </div>
+                    </div>
+                    <div className="form-control items-center flex flex-col gap-2 pr-28">
+                        <label className="label cursor-pointer"><span className="label-text capitalize">free shipping</span></label>
+                        <input type="checkbox" className="checkbox checkbox-primary checkbox-sm" />
+                    </div>
+                    <div className="flex flex-row gap-4">
+                        <button type="submit" className="btn btn-primary btn-sm w-full">search</button>
+                        <Link className="btn btn-accent btn-sm w-full" to="/products">reset</Link>
+                    </div>
                 </div>
             </form>
         </div>
